@@ -13,3 +13,15 @@ using var connection = new MySqlConnection(connectionString);
 connection.Open();
 
 Console.WriteLine("MySQL connection is working");
+
+string sql = "SELECT * FROM Boende";
+
+using var command = new MySqlCommand(sql, connection);
+using var reader = command.ExecuteReader();
+
+while (reader.Read())
+{
+    Console.WriteLine(
+        $"{reader["id"]}: {reader["namn"]} - {reader["ort"]}"
+    );
+}
