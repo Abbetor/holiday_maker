@@ -95,3 +95,27 @@ Så länge det finns en till rad så returneras TRUE, vilket får programmet att
 När det inte finns några mer rader så returneras false, vilket stoppar loopen.
 
 Loopen läser och skriver ut en rad i taget.
+
+## getRooms query
+
+```csharp
+string getRooms = """
+    SELECT
+        Rum.id,
+        Rum.rumsnummer,
+        Rum.max_personer,
+        Rum.pris_per_natt,
+        Boende.namn,
+        Boende.ort
+    FROM Rum
+    JOIN Boende
+        ON Rum.boende_id = Boende.id
+    WHERE Boende.ort = @ort;
+    """;
+```
+Här skapade jag en sql query som hämtar informationen om rum och vilket boende det rummet tillhör. Använder JOIN för att koppla ihop rum tabellen  genom att använda boende_id och id.
+
+```SQL
+WHERE Boende.ort = @ort
+```
+Här används WHERE för att filtrera resultatet, jag vill bara få fram rum utifrån den ort som använder skriver in. @ort är en parameter som är kopplad till C# variabeln ort. Värdet i ort används sen av sql queryn så att man kan filtrera vilka rum som visas baserat på vilken ort det är.

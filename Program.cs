@@ -27,13 +27,22 @@ string getRooms = """
         ON Rum.boende_id = Boende.id
     WHERE Boende.ort = @ort;
     """;
-    
-string ort = "Ystad"; 
+Console.Write("Ange ort: ");
+string ort = Console.ReadLine()!;
+
+
+
 using var roomCommand = new MySqlCommand(getRooms, connection);
 roomCommand.Parameters.AddWithValue("@ort", ort);
 using var roomReader = roomCommand.ExecuteReader();
-
+bool foundRoom = false;
 while (roomReader.Read())
 {
-    Console.WriteLine($"{roomReader["rumsnummer"]}: {roomReader["namn"]}: {roomReader["ort"]} : {roomReader["max_personer"]} : {roomReader["pris_per_natt"]}");
+    foundRoom = true;
+    Console.WriteLine($"Rumsnummer: {roomReader["rumsnummer"]}: {roomReader["namn"]}\n{roomReader["ort"]} : Max antal personer: {roomReader["max_personer"]} : {roomReader["pris_per_natt"]}kr\n");
 }
+if (!foundRoom)
+{
+    Console.WriteLine("Det finns inga rum på den orten.");
+}
+
