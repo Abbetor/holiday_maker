@@ -119,3 +119,65 @@ Här skapade jag en sql query som hämtar informationen om rum och vilket boende
 WHERE Boende.ort = @ort
 ```
 Här används WHERE för att filtrera resultatet, jag vill bara få fram rum utifrån den ort som använder skriver in. @ort är en parameter som är kopplad till C# variabeln ort. Värdet i ort används sen av sql queryn så att man kan filtrera vilka rum som visas baserat på vilken ort det är.
+
+## Parametrar och använderinput i programmet
+
+```csharp
+Console.Write("Ange ort: ");
+string ort = Console.ReadLine()!;
+```
+
+Här frågar programmet vilken ort som den vill söka efter. Svaret som användaren skriver sparas i ort
+
+Sedan kopplas värdet från ort in till parametern @ort:
+
+```csharp
+roomCommand.Parameters.AddWithValue("@ort", ort);
+```
+
+## Metoder
+
+```csharp
+void GetRoomsByTown(MySqlConnection connection)
+{
+    // koden
+}
+```
+Parametern "MySqlConnection connection" gör så att metoden får tillgång till databasen som skapades innan i programmet.
+
+```csharp
+void GetRoomsByTown(MySqlConnection connection)
+{
+    // koden
+}
+```
+
+Samma sak här med parametern som föra metoden,
+
+## Felhantering för om något hittades eller inte
+```csharp
+bool foundRoom = false;
+
+    while (roomReader.Read())
+    {
+        foundRoom = true;
+
+        Console.WriteLine(
+            $"Rumsnummer: {roomReader["rumsnummer"]}: " +
+            $"{roomReader["namn"]}\n" +
+            $"{roomReader["ort"]} : Max antal personer: " +
+            $"{roomReader["max_personer"]} : " +
+            $"{roomReader["pris_per_natt"]}kr\n"
+        );
+    }
+
+    if (!foundRoom)
+    {
+        Console.WriteLine("Det finns inga rum på den orten.");
+    }
+```
+Ganska self-explanitory.
+
+## RoomService filen
+
+Jag skapade en klass RoomService och flyttade både "GetRoomsByTown()" & "CheckAmountOfPeople()" metoderna in till RoomService Från Program.cs för att få mer struktur i programmet, så jag lägger all kod som handlar om rum i RoomService.
