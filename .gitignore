@@ -1,0 +1,17 @@
+# Visual Studio / Rider / .NET
+bin/
+obj/
+.vs/
+.idea/
+
+# User-specific files
+*.user
+*.suo
+
+# Environment / secrets
+.env
+appsettings.Local.json
+
+# Build output
+Debug/
+Release/
