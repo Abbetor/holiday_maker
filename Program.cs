@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MySqlConnector;
+using Microsoft.Extensions.Configuration;
 
 var configuration = new ConfigurationBuilder()
 .AddJsonFile("appsettings.json")
@@ -6,5 +7,9 @@ var configuration = new ConfigurationBuilder()
 
 string connectionString =
 configuration.GetConnectionString("Default")!;
-
 Console.WriteLine("Connection string loaded!");
+
+using var connection = new MySqlConnection(connectionString);
+connection.Open();
+
+Console.WriteLine("MySQL connection is working");
