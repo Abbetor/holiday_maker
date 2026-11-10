@@ -14,18 +14,6 @@ connection.Open();
 
 Console.WriteLine("MySQL connection is working");
 
-string sql = "SELECT * FROM Boende";
-
-using var command = new MySqlCommand(sql, connection);
-using var reader = command.ExecuteReader();
-
-while (reader.Read())
-{
-    Console.WriteLine(
-        $"{reader["id"]}: {reader["namn"]} - {reader["ort"]}"
-    );
-}
-
 string getRooms = """
     SELECT
         Rum.id,
@@ -36,7 +24,16 @@ string getRooms = """
         Boende.ort
     FROM Rum
     JOIN Boende
-        ON Rum.boende_id = Boende.id;
+        ON Rum.boende_id = Boende.id
+    WHERE Boende.ort = @ort;
     """;
-
     
+string ort = "Ystad"; 
+using var roomCommand = new MySqlCommand(getRooms, connection);
+roomCommand.Parameters.AddWithValue("@ort", ort);
+using var roomReader = roomCommand.ExecuteReader();
+
+while (roomReader.Read())
+{
+    Console.WriteLine($"{roomReader["rumsnummer"]}: {roomReader["namn"]}: {roomReader["ort"]} : {roomReader["max_personer"]} : {roomReader["pris_per_natt"]}");
+}
