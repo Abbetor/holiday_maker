@@ -25,3 +25,18 @@ while (reader.Read())
         $"{reader["id"]}: {reader["namn"]} - {reader["ort"]}"
     );
 }
+
+string getRooms = """
+    SELECT
+        Rum.id,
+        Rum.rumsnummer,
+        Rum.max_personer,
+        Rum.pris_per_natt,
+        Boende.namn,
+        Boende.ort
+    FROM Rum
+    JOIN Boende
+        ON Rum.boende_id = Boende.id;
+    """;
+
+    
