@@ -187,4 +187,4 @@ Jag skapade en klass RoomService och flyttade både "GetRoomsByTown()" & "CheckA
 
 Jag skapade en klass som heter BookingService för mera struktur den klass samlar all kod som handlar om bokningar. Mycket här är liknande kod exempel så går inte igenom koden här.
 
-
+Bestämde mig att inte fortsätta göra mer detaljerad förklaring på grund av tidsbrist.

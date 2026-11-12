@@ -229,6 +229,45 @@ class BookingService
         Console.WriteLine("Antalet personer har ändrats.");
     }
 
+    public void CancelBooking(MySqlConnection connection)
+    {
+        Console.Write("Ange bokning id: ");
+        int bokningid = int.Parse(Console.ReadLine()!);
+
+        string checkBooking = """
+            SELECT id
+            FROM Bokning
+            WHERE id = @bokningid;
+            """;
+
+        using (var bookingCommand = new MySqlCommand(checkBooking, connection))
+        {
+            bookingCommand.Parameters.AddWithValue("@bokningid", bokningid);
+
+            using (var bookingReader = bookingCommand.ExecuteReader())
+            {
+                if (!bookingReader.Read())
+                {
+                    Console.WriteLine("Bokningen finns inte.");
+                    return;
+                }
+            }
+        }
+
+        string cancelBooking = """
+            DELETE FROM Bokning
+            WHERE id = @bokningid;
+            """;
+
+        using var deleteCommand = new MySqlCommand(cancelBooking, connection);
+
+        deleteCommand.Parameters.AddWithValue("@bokningid", bokningid);
+
+        deleteCommand.ExecuteNonQuery();
+
+        Console.WriteLine("Bokningen är avbokad.");
+    }
+
 }
 
 
