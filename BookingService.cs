@@ -21,7 +21,25 @@ class BookingService
 
         int kundid = InputHelper.ReadInt("Ange kund id: ", 1);
 
-        
+        string checkCustomer = """
+            SELECT id
+            FROM Kund
+            WHERE id = @kundid;
+            """;
+
+        using (var customerCommand = new MySqlCommand(checkCustomer, connection))
+        {
+            customerCommand.Parameters.AddWithValue("@kundid", kundid);
+
+            using (var customerReader = customerCommand.ExecuteReader())
+            {
+                if (!customerReader.Read())
+                {
+                    Console.WriteLine("Kunden finns inte.");
+                    return;
+                }
+            }
+        }
 
         int antalpersoner = InputHelper.ReadInt("Ange antal personer: ", 1);
 

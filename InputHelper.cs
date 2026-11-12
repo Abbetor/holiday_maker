@@ -39,4 +39,25 @@ static class InputHelper
             Console.WriteLine("Fel format, Skriv datumet som yyyy-MM-dd");
         }
     }
+
+
+        public static string ReadText(string prompt, int maxLength)
+    {
+        while (true)
+        {
+            Console.Write(prompt);
+            string? input = Console.ReadLine();
+
+            if (input == null)
+                Environment.Exit(0);
+
+            input = input.Trim();
+
+            if (input.Length > 0 && input.Length <= maxLength)
+                return input;
+
+            Console.WriteLine($"Får inte vara tomt och max {maxLength} tecken.");
+        }
+    }
+
 }
