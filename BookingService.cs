@@ -19,19 +19,15 @@ class BookingService
             }
         }
 
-        Console.Write("Ange kund id: ");
-        int kundid = int.Parse(Console.ReadLine()!);
+        int kundid = InputHelper.ReadInt("Ange kund id: ", 1);
 
         
 
-        Console.Write("Ange antal personer: ");
-        int antalpersoner = int.Parse(Console.ReadLine()!);
+        int antalpersoner = InputHelper.ReadInt("Ange antal personer: ", 1);
 
-        Console.Write("Incheckning (yyyy-mm-dd): ");
-        DateTime checkIn = DateTime.Parse(Console.ReadLine()!);
+        DateTime checkIn = InputHelper.ReadDate("Incheckning (yyyy-MM-dd): ");
 
-        Console.Write("Utcheckning (yyyy-mm-dd): ");
-        DateTime checkOut = DateTime.Parse(Console.ReadLine()!);
+        DateTime checkOut = InputHelper.ReadDate("Utcheckning (yyyy-MM-dd): ");
 
         string searchRooms = """
             SELECT id, rumsnummer
@@ -49,8 +45,7 @@ class BookingService
             );
         }
 
-        Console.Write("Ange rum id: ");
-        int rumid = int.Parse(Console.ReadLine()!);
+        int rumid = InputHelper.ReadInt("Ange rum id: ", 1);
 
         string checkCapacity = """
         SELECT max_personer
@@ -148,8 +143,7 @@ class BookingService
 
     public void ShowCustomerBookings(MySqlConnection connection)
     {
-        Console.Write("Ange kund id: ");
-        int kundid = int.Parse(Console.ReadLine()!);
+        int kundid = InputHelper.ReadInt("Ange kund id: ", 1);
 
         string searchBookings = """
             SELECT
@@ -198,8 +192,7 @@ class BookingService
 
     public void ChangeAmountOfPeople(MySqlConnection connection)
     {
-        Console.Write("Ange bokning id: ");
-        int bokningid = int.Parse(Console.ReadLine()!);
+        int bokningid = InputHelper.ReadInt("Ange bokning id: ", 1);
 
         string searchBooking = """
             SELECT
@@ -233,8 +226,7 @@ class BookingService
             }
         }
 
-        Console.Write("Ange nytt antal personer: ");
-        int antalpersoner = int.Parse(Console.ReadLine()!);
+        int antalpersoner = InputHelper.ReadInt("Ange nytt antal personer: ", 1);
 
         if (antalpersoner <= 0)
         {
@@ -268,8 +260,7 @@ class BookingService
 
     public void CancelBooking(MySqlConnection connection)
     {
-        Console.Write("Ange bokning id: ");
-        int bokningid = int.Parse(Console.ReadLine()!);
+        int bokningid = InputHelper.ReadInt("Ange bokning id: ", 1);
 
         string checkBooking = """
             SELECT id

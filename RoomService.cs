@@ -63,8 +63,7 @@ class RoomService
             WHERE Rum.max_personer >= @antalPersoner;
             """;
 
-        Console.Write("Skriv hur många personer: ");
-        int antalpersoner = int.Parse(Console.ReadLine()!);
+        int antalpersoner = InputHelper.ReadInt("Skriv hur många personer: ", 1);
 
         using var peopleCommand =
             new MySqlCommand(checkMaxAmountOfPeople, connection);
@@ -127,8 +126,7 @@ class RoomService
         Console.Write("Ange ort: ");
         string town = Console.ReadLine()!;
 
-        Console.Write("Antal personer: ");
-        int amountOfPeople = int.Parse(Console.ReadLine()!);
+        int amountOfPeople = InputHelper.ReadInt("Antal personer: ", 1);
 
         Console.Write("Har boendet pool? (JA/NEJ): ");
         string poolInput = Console.ReadLine()!.ToUpper();
@@ -140,17 +138,13 @@ class RoomService
 
         bool resturant = resturantinput == "JA";
 
-        Console.Write("Vad är ditt föredragna max avstånd till stranden i meter?: ");
-        int beachDistance = int.Parse(Console.ReadLine()!);
+        int beachDistance = InputHelper.ReadInt("Vad är ditt föredragna max avstånd till stranden i meter?: ", 0);
 
-        Console.Write("Vad är ditt föredragna max avstånd till centrum i meter?: ");
-        int centrumDistance = int.Parse(Console.ReadLine()!);
+        int centrumDistance = InputHelper.ReadInt("Vad är ditt föredragna max avstånd till centrum i meter?: ", 0);
 
-        Console.Write("Incheckning (yyyy-MM-dd): ");
-        DateTime checkIn = DateTime.Parse(Console.ReadLine()!);
+        DateTime checkIn = InputHelper.ReadDate("Incheckning (yyyy-MM-dd): ");
 
-        Console.Write("Utcheckning (yyyy-MM-dd): ");
-        DateTime checkOut = DateTime.Parse(Console.ReadLine()!);
+        DateTime checkOut = InputHelper.ReadDate("Utcheckning (yyyy-MM-dd): ");
 
         Console.Write("Sortera efter pris eller omdöme: ");
         string sort = Console.ReadLine()!.ToUpper();
