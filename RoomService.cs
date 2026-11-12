@@ -110,10 +110,11 @@ class RoomService
                 ON Rum.boende_id = Boende.id
             WHERE Boende.ort = @ort
             AND Rum.max_personer >= @antalpersoner
-            AND Boende.pool = @pool
-            AND Boende.restaurang = @restaurang
-            AND Boende.avstand_strand <= @maxAvstandStrand
-            AND Boende.avstand_centrum <= @maxAvstandCentrum
+            AND (@pool = FALSE OR Boende.pool = TRUE)
+            AND (@restaurang = FALSE OR Boende.restaurang = TRUE)
+            AND (@maxAvstandStrand = 0 OR Boende.avstand_strand <= @maxAvstandStrand)
+            AND (@maxAvstandCentrum = 0 OR Boende.avstand_centrum <= @maxAvstandCentrum)
+
             AND NOT EXISTS (
                 SELECT 1
                 FROM Bokning
@@ -128,23 +129,25 @@ class RoomService
 
         int amountOfPeople = InputHelper.ReadInt("Antal personer: ", 1);
 
-        Console.Write("Har boendet pool? (JA/NEJ): ");
-        string poolInput = Console.ReadLine()!.ToUpper();
+        Console.Write("Måste boendet ha pool? (JA/NEJ): ");
+        bool pool = (Console.ReadLine() ?? "").Trim().ToUpper() == "JA";
 
-        bool pool = poolInput == "JA";
+        Console.Write("Måste boendet ha restaurang? (JA/NEJ): ");
+        bool resturant = (Console.ReadLine() ?? "").Trim().ToUpper() == "JA";
 
-        Console.Write("Har boendet resturang? (JA/NEJ): ");
-        string resturantinput = Console.ReadLine()!.ToUpper();
+        int beachDistance = InputHelper.ReadInt("Max avstånd till strand i meter (0 = inget krav): ", 0);
 
-        bool resturant = resturantinput == "JA";
-
-        int beachDistance = InputHelper.ReadInt("Vad är ditt föredragna max avstånd till stranden i meter?: ", 0);
-
-        int centrumDistance = InputHelper.ReadInt("Vad är ditt föredragna max avstånd till centrum i meter?: ", 0);
+        int centrumDistance = InputHelper.ReadInt("Max avstånd till centrum i meter (0 = inget krav): ", 0);
 
         DateTime checkIn = InputHelper.ReadDate("Incheckning (yyyy-MM-dd): ");
 
         DateTime checkOut = InputHelper.ReadDate("Utcheckning (yyyy-MM-dd): ");
+
+        if (checkOut <= checkIn)
+        {
+            Console.WriteLine("Utcheckningen måste vara minst en dag efter incheckningen.");
+            return;
+        }
 
         Console.Write("Sortera efter pris eller omdöme: ");
         string sort = Console.ReadLine()!.ToUpper();

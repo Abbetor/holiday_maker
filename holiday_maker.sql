@@ -1,3 +1,4 @@
+CREATE DATABASE IF NOT EXISTS holiday_maker;
 USE holiday_maker;
 CREATE TABLE Boende (
     id INT AUTO_INCREMENT PRIMARY KEY,
