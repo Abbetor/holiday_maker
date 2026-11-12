@@ -18,6 +18,8 @@ Console.WriteLine("MySQL connection is working");
 
 BookingService bookingService = new BookingService();
 RoomService roomService = new RoomService();
+CustomerService customerService = new CustomerService();
+
 
 while (true)
 {
@@ -29,7 +31,8 @@ while (true)
     Console.WriteLine("5. Visa kundens bokningar");
     Console.WriteLine("6. Ändra antal personer");
     Console.WriteLine("7. Avboka bokning");
-    Console.WriteLine("8. Avsluta");
+    Console.WriteLine("8. Registrera kund");
+    Console.WriteLine("9. Avsluta");
 
 
     Console.Write("Välj: ");
@@ -69,6 +72,10 @@ while (true)
         bookingService.CancelBooking(connection);
     }
     else if (choice == "8")
+    {
+        customerService.RegisterCustomer(connection);
+    }
+    else if (choice == "9")
     {
         break;
     }

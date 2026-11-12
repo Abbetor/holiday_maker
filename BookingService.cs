@@ -4,22 +4,11 @@ class BookingService
 {
     public void CreateBooking(MySqlConnection connection)
     {
-        string searchCustomers = """
-            SELECT id
-            FROM Kund;
-            """;
-        using (var createCommand = new MySqlCommand(searchCustomers, connection))
-        using (var CustomerReader = createCommand.ExecuteReader())
-        {
-            while (CustomerReader.Read())
-            {
-                Console.WriteLine(
-                    $"Kund id: {CustomerReader["id"]}"
-                );
-            }
-        }
+        CustomerService customerService = new CustomerService();
+        customerService.ShowCustomers(connection);
 
         int kundid = InputHelper.ReadInt("Ange kund id: ", 1);
+
 
         string checkCustomer = """
             SELECT id
