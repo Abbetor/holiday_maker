@@ -33,7 +33,13 @@ while (true)
 
 
     Console.Write("Välj: ");
-    string choice = Console.ReadLine()!;
+    string? choice = Console.ReadLine()!;
+
+    if (choice == null)
+    {
+        Console.WriteLine("\nIngen inmatning, programmet avslutas.");
+        break;
+    }
     if (choice == "1")
     {
         roomService.SearchRooms(connection);

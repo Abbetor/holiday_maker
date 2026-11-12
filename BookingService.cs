@@ -29,6 +29,19 @@ class BookingService
 
         DateTime checkOut = InputHelper.ReadDate("Utcheckning (yyyy-MM-dd): ");
 
+        if (checkIn < DateTime.Today)
+        {
+            Console.WriteLine("Incheckningen kan inte vara i det förflutna.");
+            return;
+        }
+
+        if (checkOut <= checkIn)
+        {
+            Console.WriteLine("Utcheckningen måste vara minst en dag efter incheckningen.");
+            return;
+        }
+
+
         string searchRooms = """
             SELECT id, rumsnummer
             FROM Rum;
