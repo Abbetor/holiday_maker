@@ -52,6 +52,43 @@ class BookingService
         Console.Write("Ange rum id: ");
         int rumid = int.Parse(Console.ReadLine()!);
 
+        string checkCapacity = """
+        SELECT max_personer
+        FROM Rum
+        WHERE id = @rumid;
+        """;
+
+        int maxPersoner;
+
+        using (var capacityCommand = new MySqlCommand(checkCapacity, connection))
+        {
+            capacityCommand.Parameters.AddWithValue("@rumid", rumid);
+
+            using (var capacityReader = capacityCommand.ExecuteReader())
+            {
+                if (!capacityReader.Read())
+                {
+                    Console.WriteLine("Rummet finns inte.");
+                    return;
+                }
+
+                maxPersoner = Convert.ToInt32(capacityReader["max_personer"]);
+            }
+        }
+
+        if (antalpersoner <= 0)
+        {
+            Console.WriteLine("Antalet personer måste vara minst 1.");
+            return;
+        }
+
+        if (antalpersoner > maxPersoner)
+        {
+            Console.WriteLine(
+                $"Rummet har plats för max {maxPersoner} personer.");
+            return;
+        }
+
         string checkRoom = """
             SELECT id
             FROM Rum
