@@ -182,7 +182,10 @@ class BookingService
                 Bokning.utcheckning,
                 Rum.rumsnummer,
                 Boende.namn,
-                Boende.ort
+                Boende.ort,
+                Rum.pris_per_natt,
+                DATEDIFF(Bokning.utcheckning, Bokning.incheckning) AS antal_natter,
+                DATEDIFF(Bokning.utcheckning, Bokning.incheckning) * Rum.pris_per_natt AS totalpris
             FROM Bokning
             JOIN Rum
                 ON Bokning.rum_id = Rum.id
@@ -207,8 +210,11 @@ class BookingService
                     $"Ort: {bookingReader["ort"]}\n" +
                     $"Rum: {bookingReader["rumsnummer"]}\n" +
                     $"Antal personer: {bookingReader["antal_personer"]}\n" +
-                    $"Incheckning: {bookingReader["incheckning"]}\n" +
-                    $"Utcheckning: {bookingReader["utcheckning"]}\n"
+                    $"Datum: {bookingReader.GetDateTime("incheckning"):yyyy-MM-dd} till " +
+                    $"{bookingReader.GetDateTime("utcheckning"):yyyy-MM-dd}\n" +
+                    $"Antal nätter: {bookingReader["antal_natter"]}\n" +
+                    $"Pris per natt: {bookingReader["pris_per_natt"]} kr\n" +
+                    $"Totalpris: {bookingReader["totalpris"]} kr\n"
                     );
                 }
                 if (!foundbooking)
