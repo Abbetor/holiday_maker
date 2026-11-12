@@ -1,5 +1,3 @@
-using System.ComponentModel.Design;
-using System.Security.Cryptography.X509Certificates;
 using MySqlConnector;
 class RoomService
 {

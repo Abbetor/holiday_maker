@@ -1,5 +1,3 @@
-using System.ComponentModel.Design;
-using System.Security.Cryptography.X509Certificates;
 using MySqlConnector;
 
 class BookingService
@@ -160,6 +158,77 @@ class BookingService
             }
         }
     }
+
+    public void ChangeAmountOfPeople(MySqlConnection connection)
+    {
+        Console.Write("Ange bokning id: ");
+        int bokningid = int.Parse(Console.ReadLine()!);
+
+        string searchBooking = """
+            SELECT
+                Bokning.antal_personer,
+                Rum.max_personer
+            FROM Bokning
+            JOIN Rum
+                ON Bokning.rum_id = Rum.id
+            WHERE Bokning.id = @bokningid;
+            """;
+
+        int maxpersoner;
+
+        using (var bookingCommand = new MySqlCommand(searchBooking, connection))
+        {
+            bookingCommand.Parameters.AddWithValue("@bokningid", bokningid);
+
+            using (var bookingReader = bookingCommand.ExecuteReader())
+            {
+                if (!bookingReader.Read())
+                {
+                    Console.WriteLine("Bokningen finns inte.");
+                    return;
+                }
+
+                Console.WriteLine(
+                    $"Nuvarande antal personer: {bookingReader["antal_personer"]}"
+                );
+
+                maxpersoner = Convert.ToInt32(bookingReader["max_personer"]);
+            }
+        }
+
+        Console.Write("Ange nytt antal personer: ");
+        int antalpersoner = int.Parse(Console.ReadLine()!);
+
+        if (antalpersoner <= 0)
+        {
+            Console.WriteLine("Antalet personer måste vara minst 1.");
+            return;
+        }
+
+        if (antalpersoner > maxpersoner)
+        {
+            Console.WriteLine(
+                $"Rummet har plats för max {maxpersoner} personer."
+            );
+            return;
+        }
+
+        string updateBooking = """
+            UPDATE Bokning
+            SET antal_personer = @antalpersoner
+            WHERE id = @bokningid;
+            """;
+
+        using var updateCommand = new MySqlCommand(updateBooking, connection);
+
+        updateCommand.Parameters.AddWithValue("@antalpersoner", antalpersoner);
+        updateCommand.Parameters.AddWithValue("@bokningid", bokningid);
+
+        updateCommand.ExecuteNonQuery();
+
+        Console.WriteLine("Antalet personer har ändrats.");
+    }
+
 }
 
 
