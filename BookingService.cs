@@ -68,12 +68,13 @@ class BookingService
         int rumid = InputHelper.ReadInt("Ange rum id: ", 1);
 
         string checkCapacity = """
-        SELECT max_personer
+        SELECT max_personer, pris_per_natt
         FROM Rum
         WHERE id = @rumid;
         """;
 
         int maxPersoner;
+        decimal prisPerNatt;
 
         using (var capacityCommand = new MySqlCommand(checkCapacity, connection))
         {
@@ -88,6 +89,7 @@ class BookingService
                 }
 
                 maxPersoner = Convert.ToInt32(capacityReader["max_personer"]);
+                prisPerNatt = Convert.ToDecimal(capacityReader["pris_per_natt"]);
             }
         }
 
@@ -149,10 +151,17 @@ class BookingService
             bookingCommand.Parameters.AddWithValue("@checkOut", checkOut);
 
             bookingCommand.ExecuteNonQuery();
+            long bokningsnummer = bookingCommand.LastInsertedId;
+            int antalNatter = (checkOut - checkIn).Days;
+            decimal totalpris = antalNatter * prisPerNatt;
 
-            Console.WriteLine("Bokning lagd.");
+            Console.WriteLine("\nBokningen är klar!");
+            Console.WriteLine($"Bokningsnummer: {bokningsnummer}");
+            Console.WriteLine($"Datum: {checkIn:yyyy-MM-dd} till {checkOut:yyyy-MM-dd}");
+            Console.WriteLine($"Antal nätter: {antalNatter}");
+            Console.WriteLine($"Pris per natt: {prisPerNatt} kr");
+            Console.WriteLine($"Totalpris: {totalpris} kr");
         }
-
 
         else
         {
@@ -241,7 +250,6 @@ class BookingService
                 Console.WriteLine(
                     $"Nuvarande antal personer: {bookingReader["antal_personer"]}"
                 );
-
                 maxpersoner = Convert.ToInt32(bookingReader["max_personer"]);
             }
         }
@@ -310,9 +318,7 @@ class BookingService
         using var deleteCommand = new MySqlCommand(cancelBooking, connection);
 
         deleteCommand.Parameters.AddWithValue("@bokningid", bokningid);
-
         deleteCommand.ExecuteNonQuery();
-
         Console.WriteLine("Bokningen är avbokad.");
     }
 
