@@ -16,6 +16,7 @@ connection.Open();
 
 Console.WriteLine("MySQL connection is working");
 
+BookingService bookingService = new BookingService();
 RoomService roomService = new RoomService();
 
 while (true)
@@ -23,7 +24,8 @@ while (true)
     Console.WriteLine("\n--- Holiday Maker ---");
     Console.WriteLine("1. Sök rum efter ort");
     Console.WriteLine("2. Sök rum efter antal personer");
-    Console.WriteLine("3. Avsluta");
+    Console.WriteLine("3. Skapa bokning");
+
 
     Console.Write("Välj: ");
     string choice = Console.ReadLine()!;
@@ -38,7 +40,11 @@ while (true)
     }
     else if (choice == "3")
     {
-        break;
+        bookingService.CreateBooking(connection);
+    }
+    else if (choice == "4")
+    {
+       
     }
     else
     {

@@ -181,3 +181,10 @@ Ganska self-explanitory.
 ## RoomService filen
 
 Jag skapade en klass RoomService och flyttade både "GetRoomsByTown()" & "CheckAmountOfPeople()" metoderna in till RoomService Från Program.cs för att få mer struktur i programmet, så jag lägger all kod som handlar om rum i RoomService.
+
+
+## Booking service filen
+
+Jag skapade en klass som heter BookingService för mera struktur den klass samlar all kod som handlar om bokningar. Mycket här är liknande kod exempel så går inte igenom koden här.
+
+
