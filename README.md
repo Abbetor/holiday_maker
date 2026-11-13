@@ -6,7 +6,7 @@ Databas: MySQL. Applikation: C# (.NET 10) med MySqlConnector.
 ## Starta programmet
 
 1. Kör SQL-skriptet `holiday_maker.sql` för att skapa tabeller och testdata.
-2. Lägg anslutningssträngen i `appsettings.json`.
+2. Kopiera `appsettings_example.json`, döp kopian till appsettings.json och fyll i ditt eget MySQL-användarnamn och lösenord.
 3. Kör `dotnet run`.
 
 ## Testning
@@ -18,12 +18,12 @@ Tillgängligheten avgörs av villkoret
 
 | # | Vad testas | Steg | Förväntat resultat | Resultat |
 |---|---|---|---|---|
-| 1 | Ledigt rum visas, upptaget filtreras bort | Val 1: Ystad, 1 person, JA, JA, 99999, 99999, 2026-12-11 till 2026-12-12 | Hotel Ocean rum 1 (bokat 10–13 dec) visas inte. Beach Resort rum 1 visas. | ✅ |
+| 1 | Ledigt rum visas, upptaget filtreras bort | Val 1: Ystad, 1 person, NEJ, NEJ, 0, 0, 2026-12-11 till 2026-12-12 | Hotel Ocean rum 1 (bokat 10–13 dec) visas inte. Hotel Ocean rum 2–4 visas. | ✅ |
 | 2 | Bokning samma dag som en tidigare kund checkar ut | Val 4: rum id 1, 2026-12-13 till 2026-12-14 | Bokningen godkänns, eftersom utcheckningsdagen inte upptar rummet | ✅ |
 | 3a | Överlappande bokning nekas | Val 4: rum id 1, 2026-12-11 till 2026-12-12 | "Rummet är inte ledigt under dessa datum." | ✅ |
 | 3b | Omslutande bokning nekas | Val 4: rum id 1, 2026-12-01 till 2026-12-31 | "Rummet är inte ledigt under dessa datum." | ✅ |
 | 4 | För stort sällskap nekas | Val 4: 5 personer, rum id 1 (max 1) | "Rummet har plats för max 1 personer." | ✅ |
-| 5a | Kombinerade filter | Val 1: pool JA, restaurang JA, max 300 m till strand | Bara boenden som uppfyller alla villkor visas | ✅ |
+| 5a | Kombinerade filter | Val 1: Ystad, pool JA, restaurang JA, max 150 m till strand, 0 till centrum | Bara Beach Resort visas (100 m), Hotel Ocean (200 m) filtreras bort | ✅ |
 | 5b | Sortering på pris | Val 1, sortera "pris" | Lägst pris först | ✅ |
 | 5c | Sortering på omdöme | Val 1, sortera "omdöme" | Högst omdöme först | ✅ |
 | 6a | Ändra antal personer inom kapaciteten | Val 6: bokning i rum med max 4, ändra till 3 | "Antalet personer har ändrats." | ✅ |
@@ -43,3 +43,5 @@ Tillgängligheten avgörs av villkoret
 
 
 Strukturen i README:n togs fram med hjälp av en AI-assistent.
+
+Reflektionen finns i Reflektion.pdf som jag har laddat upp separat.
